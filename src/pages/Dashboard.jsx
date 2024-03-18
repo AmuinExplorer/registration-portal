@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { getAuth } from 'firebase/auth';
 import HandleLogout from './Logout';
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const [currentUser, setCurrentUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const icon = ['menu-icon.png', 'close-icon.png']
+
+  const navigate = useNavigate();
 
   // Toggle the menu button
   const toggleMenu = () => {
@@ -41,18 +44,18 @@ function Dashboard() {
           setCurrentUser(user);
         } else {
           // Redirect to login if user email is not authorized
-          window.location.href = '/login';
+          navigate('/login')
         }
       } else {
         // Redirect to login if no user is signed in
-        window.location.href = '/login';
+        navigate('/login')
       }
       setLoading(false);
     });
 
     // Clean up subscription
     return () => unsubscribe();
-  }, []);
+  }, [navigate]);
 
   // Render loading indicator until authentication state is determined
   if (loading) {
