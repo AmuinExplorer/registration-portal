@@ -1,6 +1,7 @@
 import React from 'react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useNavigate } from "react-router-dom";
 
 // Initialize Firebase app with your Firebase project config
 const firebaseConfig = {
@@ -20,20 +21,20 @@ const auth = getAuth(firebaseApp);
 const provider = new GoogleAuthProvider();
 
 const GoogleSignInButton = () => {
-  
+  const navigate = useNavigate();
   const handleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user.email;
       if(user === "amuinharniel.2003@gmail.com") {
         // Redirect to dashboard after successful sign-in
-        window.location.href = '/dashboard';
+        navigate('/dashboard');
       } else {
         console.error('Admin Login Only!');
         alert('You are not AUTHORIZED!')
       }
     } catch (error) {
-      window.location.href = '/login';
+      navigate('/login');
       console.error('Error signing in with Google:', error.message);
     }
   };
